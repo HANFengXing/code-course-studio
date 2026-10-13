@@ -1,0 +1,4 @@
+interface:
+  display_name: "代码课程工作室"
+  short_description: "将大型代码库讲成可追溯源码、可单步播放的离线 HTML 交互课程"
+  default_prompt: "使用 $code-course-studio 把我指定的源码目录制作成适合理解的交互课程，包含业务流程、代码流程、设计取舍与关键实现。"
