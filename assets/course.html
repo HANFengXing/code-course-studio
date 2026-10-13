@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>代码课程工作室</title>
+  <style>__COURSE_CSS__</style>
+</head>
+<body>
+  <a class="skip-link" href="#lesson">跳到课程正文</a>
+  <div class="app-shell" id="app">
+    <aside class="sidebar" aria-label="课程目录与学习路线">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>代码课堂<span class="offline-label">离线阅读</span></div>
+      <p class="course-name" id="course-name"></p>
+      <p class="course-subtitle" id="course-subtitle"></p>
+      <label for="chapter-search" class="field-label">查找章节</label>
+      <input id="chapter-search" data-testid="chapter-search" type="search" placeholder="搜索问题、流程或知识点" autocomplete="off">
+      <p id="search-status" class="search-status" role="status"></p>
+      <label for="study-path" class="field-label">学习路线</label>
+      <select id="study-path" data-testid="study-path"></select>
+      <div class="mobile-chapter-select">
+        <label for="chapter-select" class="field-label">当前章节</label>
+        <select id="chapter-select" data-testid="chapter-select"></select>
+      </div>
+      <nav id="chapter-nav" aria-label="章节列表"></nav>
+      <div class="reading-note">
+        <p class="field-label">推荐读法</p>
+        <p>先看业务问题，再逐步播放流程。遇到关键结论，展开源码核对。</p>
+        <a href="#glossary">查看术语表</a>
+      </div>
+      <p id="build-note" class="build-note"></p>
+    </aside>
+
+    <main id="lesson" tabindex="-1">
+      <div class="topline"><span id="chapter-position"></span><div class="reading-settings"><label for="theme-select" class="theme-label">主题</label><select id="theme-select" data-testid="theme-select" aria-label="阅读主题"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select><button type="button" id="print-course" class="text-button" data-testid="print-course">打印当前章节</button></div></div>
+      <header class="chapter-header">
+        <h1 id="chapter-title">正在读取课程</h1>
+        <p id="chapter-question" class="chapter-question"></p>
+        <p id="chapter-summary" class="chapter-summary"></p>
+        <ul id="learning-goals" class="learning-goals" aria-label="学习目标"></ul>
+      </header>
+
+      <details id="course-overview" class="overview-block">
+        <summary>课程边界与已知条件 <span>开始前看一眼</span></summary>
+        <div id="overview-content" class="overview-content"></div>
+      </details>
+
+      <section class="flow-section" aria-labelledby="flow-heading">
+        <div class="section-heading"><h2 id="flow-heading">流程实验</h2><span id="animation-mode" class="mode-label"></span></div>
+        <p id="animation-description" class="section-intro"></p>
+        <p id="flow-limit" class="flow-limit">课程展示选取场景中的节点与明确声明的有向关系；未声明的连接不作推断。</p>
+        <div class="player-toolbar">
+          <div class="flow-tabs" role="tablist" aria-label="流程视角">
+            <button id="flow-business" data-testid="flow-business" type="button" role="tab" aria-selected="true" aria-controls="flow-list">业务流程</button>
+            <button id="flow-code" data-testid="flow-code" type="button" role="tab" aria-selected="false" aria-controls="flow-list" tabindex="-1">代码流程</button>
+          </div>
+          <span id="view-hint" class="view-hint"></span>
+        </div>
+        <div class="playback-controls" aria-label="步骤播放控制">
+          <div class="step-buttons"><button type="button" id="step-prev" data-testid="step-prev">← 上一步</button><button type="button" id="play-toggle" data-testid="play-toggle" class="primary-button" aria-pressed="false">播放</button><button type="button" id="step-next" data-testid="step-next">下一步 →</button></div>
+          <div class="progress-control"><label for="step-range" class="sr-only">跳转到步骤</label><input type="range" id="step-range" data-testid="step-range" min="0" max="0" value="0" step="1"><span id="progress-label" class="microcopy"></span></div>
+          <label for="playback-speed" class="speed-label">速度 <select id="playback-speed" data-testid="playback-speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>
+        </div>
+        <p id="playback-status" class="player-status" role="status" aria-live="polite"></p>
+        <div class="flow-workbench">
+          <div class="flow-column" tabindex="0" role="region" aria-label="流程节点，可滚动阅读"><ol id="flow-list" role="tabpanel" aria-labelledby="flow-business"></ol></div>
+          <div class="step-column" tabindex="0" role="region" aria-label="当前步骤、状态与示意，可滚动阅读">
+            <div class="step-heading"><span class="field-label">当前步骤</span><span id="step-counter" class="step-counter"></span></div>
+            <h3 id="step-title"></h3>
+            <p id="step-explanation"></p>
+            <div id="step-evidence" class="evidence-links"></div>
+            <div id="state-block" class="state-block"><h4>数据状态</h4><div class="table-scroll"><table class="state-table"><thead><tr><th scope="col">变量 / 观察项</th><th scope="col">当前值</th></tr></thead><tbody id="state-table-body"></tbody></table></div><p id="state-note" class="microcopy"></p></div>
+            <figure id="points-figure" class="points-figure" hidden><svg id="points-chart" viewBox="0 0 480 260" role="img" aria-labelledby="points-title points-caption"><title id="points-title">当前步骤的二维示意</title></svg><figcaption id="points-caption">二维教学示意，坐标未声明实测单位。</figcaption></figure>
+            <p id="points-empty" class="microcopy">本步骤没有可绘制点。</p>
+          </div>
+        </div>
+        <div id="trace-note" class="trace-note" hidden></div>
+      </section>
+
+      <section class="reading-section" aria-labelledby="design-heading"><div class="section-heading"><h2 id="design-heading">设计思路与取舍</h2></div><div id="design-decisions"></div></section>
+      <section class="reading-section" aria-labelledby="implementation-heading"><div class="section-heading"><h2 id="implementation-heading">关键实现细节</h2></div><div id="implementation"></div></section>
+      <section class="reading-section source-section" aria-labelledby="source-heading"><div class="section-heading"><h2 id="source-heading">源码引用</h2><span id="evidence-count" class="microcopy"></span></div><p class="section-intro">行号和摘录来自构建时的源码快照。引用校验只证明原文存在，解释仍需结合工程验证。</p><div id="source-references"></div></section>
+      <section class="reading-section" aria-labelledby="quiz-heading"><div class="section-heading"><h2 id="quiz-heading">迁移与自测</h2></div><div id="quiz-list"></div></section>
+      <section id="glossary" class="reading-section" aria-labelledby="glossary-heading"><div class="section-heading"><h2 id="glossary-heading">术语表</h2></div><dl id="glossary-list" class="glossary-list"></dl></section>
+      <nav class="chapter-footer" aria-label="章节翻页"><button type="button" id="previous-chapter" data-testid="previous-chapter"></button><button type="button" id="next-chapter" data-testid="next-chapter"></button></nav>
+      <footer class="page-footer"><span>离线课程 · 所有动画均依据课程提供的步骤</span><span id="source-fingerprint"></span></footer>
+    </main>
+  </div>
+  <noscript><p class="noscript-message">此离线课程需要浏览器启用 JavaScript，以显示课程文字、源码和逐步流程。</p></noscript>
+  <script id="course-data" type="application/json">__COURSE_DATA__</script>
+  <script>__COURSE_JS__</script>
+</body>
+</html>
